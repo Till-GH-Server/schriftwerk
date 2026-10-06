@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schriftarten-Generator – Coole Schriftarten kopieren</title>
+<style>
+:root{--bg:#f4f5fa;--card:#fff;--ink:#161827;--mute:#6a6f85;--line:#e1e3ee;--acc:#5b4bff;--acc2:#ff4f9a;--accsoft:#ecebff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1120;--card:#181b30;--ink:#eef0ff;--mute:#9499b8;--line:#292d4a;--acc:#8b7dff;--acc2:#ff6fae;--accsoft:#25285a}}
+:root[data-theme="dark"]{--bg:#0f1120;--card:#181b30;--ink:#eef0ff;--mute:#9499b8;--line:#292d4a;--acc:#8b7dff;--acc2:#ff6fae;--accsoft:#25285a}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:grid;place-items:center;color:#fff;font-family:Georgia,serif;font-style:italic;font-size:20px}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer}
+.ghost:hover{border-color:var(--acc)}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;letter-spacing:-.03em;margin:28px 0 10px;max-width:16ch}
+.sub{color:var(--mute);margin:0 0 24px;max-width:56ch}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 30px rgba(40,40,90,.06)}
+textarea{width:100%;min-height:96px;resize:vertical;border:0;outline:0;background:transparent;color:var(--ink);font:500 22px/1.4 inherit;font-family:inherit}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:10px;color:var(--mute);font-size:13px;flex-wrap:wrap}
+.bar b{color:var(--ink)}
+.over{color:var(--acc2)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+.search{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;width:190px;max-width:100%}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding-bottom:40px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;transition:border-color .15s,transform .15s}
+.item:hover{border-color:var(--acc)}
+.item:active{transform:scale(.99)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--mute);font-size:13px}
+.out{font-size:20px;line-height:1.45;word-break:break-word;min-height:30px;color:var(--ink)}
+.acts{display:flex;gap:6px}
+.sm{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+.sm.on{color:var(--acc2);border-color:var(--acc2)}
+.sm.cp{background:var(--accsoft);border-color:transparent;color:var(--acc);font-weight:600}
+.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:40px 0}
+.note{color:var(--mute);font-size:13px;padding:0 0 40px;max-width:70ch}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.2s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.tabs{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.tabs .chip{font-weight:600}
+.lbl{display:block;font-size:13px;color:var(--mute);margin:0 0 6px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row .search{flex:1;min-width:160px;width:auto;font-size:16px}
+.comp{margin-top:14px}
+.grp{margin:26px 0 0}
+.grp h2{font-size:15px;margin:0 0 4px}
+.grp p{margin:0 0 10px;color:var(--mute);font-size:13px}
+.tg{display:flex;flex-wrap:wrap;gap:8px}
+.tile{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px 12px;font:inherit;font-size:18px;line-height:1.2;cursor:pointer;min-width:46px}
+.tile:hover{border-color:var(--acc);background:var(--accsoft)}
+.tile.p{font-size:16px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo"><span class="mark">F</span>Schriftwerk</div>
+  <button class="ghost" id="theme" type="button">Design wechseln</button>
+</header>
+<h1>Coole Schriftarten zum Kopieren</h1>
+<p class="sub">Text eingeben, Stil aussuchen, antippen – fertig. Funktioniert in Instagram, TikTok, Discord, WhatsApp und überall, wo du Text einfügen kannst.</p>
+
+<div class="tabs" role="group" aria-label="Bereiche">
+  <button class="chip" id="t1" type="button" aria-pressed="true">Schriftarten</button>
+  <button class="chip" id="t2" type="button" aria-pressed="false">Deko &amp; Kanal-Symbole</button>
+</div>
+<div id="fv">
+<div class="panel">
+  <textarea id="inp" aria-label="Dein Text" placeholder="Schreib hier deinen Text…" spellcheck="false">Dein Text hier</textarea>
+  <div class="bar"><span><b id="cnt">0</b> Zeichen · Instagram-Bio: max. 150</span><button class="sm" id="clr" type="button">Leeren</button></div>
+</div>
+
+<div class="tools">
+  <div class="chips" id="chips" role="group" aria-label="Kategorien"></div>
+  <input class="search" id="q" type="search" placeholder="Stil suchen…" aria-label="Stil suchen">
+</div>
+<div class="grid" id="grid"></div>
+<p class="note">Hinweis: Die Stile sind Unicode-Zeichen, keine echten Schriftdateien. Manche Geräte oder Apps zeigen einzelne Symbole eventuell als Kästchen an. Wähle dann einen anderen Stil.</p>
+</div>
+<div id="dv" hidden>
+  <div class="panel">
+    <label class="lbl" for="kn">Kanalname für die Vorschau</label>
+    <div class="row"><input class="search" id="kn" value="chat" maxlength="40" autocomplete="off"></div>
+    <div class="comp">
+      <label class="lbl" for="cmp">Eigene Kombination: Symbole antippen, sie landen hier</label>
+      <div class="row"><input class="search" id="cmp" placeholder="z. B. ├・allgemein" autocomplete="off"><button class="sm cp" id="cc" type="button">Kopieren</button><button class="sm" id="cx" type="button">Leeren</button></div>
+    </div>
+  </div>
+  <div id="sg"></div>
+  <p class="note" style="margin-top:24px">Tipp: Discord macht aus Leerzeichen in Kanalnamen automatisch Bindestriche und schreibt alles klein. Die Symbole bleiben erhalten. Kategorie-Namen dürfen Großbuchstaben und Leerzeichen enthalten.</p>
+</div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const zip=(a,b)=>{const m={},x=Array.from(a),y=Array.from(b);x.forEach((c,i)=>m[c]=y[i]);return m};
+const L='abcdefghijklmnopqrstuvwxyz',U=L.toUpperCase(),D='0123456789';
+const blk=(u,l,d,ex={})=>c=>{if(ex[c])return ex[c];const x=c.charCodeAt(0);
+  if(u&&x>=65&&x<=90)return String.fromCodePoint(u+x-65);
+  if(l&&x>=97&&x<=122)return String.fromCodePoint(l+x-97);
+  if(d&&x>=48&&x<=57)return String.fromCodePoint(d+x-48);return c};
+const mp=m=>c=>m[c]||c;
+const up=f=>c=>f(c.toUpperCase());
+const lo=f=>c=>f(c.toLowerCase());
+const run=(t,f)=>Array.from(t).map(f).join('');
+const comb=ch=>t=>Array.from(t).map(c=>c===' '?c:c+ch).join('');
+const wrap=(a,b)=>t=>a+t+b;
+
+const scrE={...zip('BEFHILMR','ℬℰℱℋℐℒℳℛ'),...zip('egо'.replace('о','o'),'ℯℊℴ')};
+const frE=zip('CHIRZ','ℭℌℑℜℨ');
+const dsE={...zip('CHNPQRZ','ℂℍℕℙℚℝℤ')};
+const itE={h:'ℎ'};
+const smallcaps=lo(mp(zip(L,'ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ')));
+const supL=zip(L+D,'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᑫʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹');
+const flipM=zip(L+D+'.,!?\'"()[]_&',"ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz0ƖᄅƐㄣϛ9ㄥ86˙'¡¿,„)(][‾⅋");
+const bubbleDig=zip(D,'⓪①②③④⑤⑥⑦⑧⑨'),negDig=zip(D,'⓿❶❷❸❹❺❻❼❽❾'),parDig=zip(D,'0⑴⑵⑶⑷⑸⑹⑺⑻⑼');
+const fw=c=>c===' '?'\u3000':blk(0xFF21,0xFF41,0xFF10)(c);
+const zal=t=>run(t,c=>{if(c===' ')return c;let s=c;for(let i=0;i<4;i++)s+=String.fromCharCode(0x300+Math.floor(Math.random()*112));return s});
+const alt=t=>{let i=0;return run(t,c=>/[a-z]/i.test(c)?(i++%2?c.toUpperCase():c.toLowerCase()):c)};
+const sw=t=>run(t,c=>/[a-z]/i.test(c)?String.fromCodePoint(0x1D4D0+(c.toUpperCase().charCodeAt(0)-65)):c);
+
+const B=[ // [Name, Kategorie, Funktion]
+['Fett','Fett & Kursiv',t=>run(t,blk(0x1D400,0x1D41A,0x1D7CE))],
+['Kursiv','Fett & Kursiv',t=>run(t,blk(0x1D434,0x1D44E,0,itE))],
+['Fett Kursiv','Fett & Kursiv',t=>run(t,blk(0x1D468,0x1D482,0x1D7CE))],
+['Sans Fett','Fett & Kursiv',t=>run(t,blk(0x1D5D4,0x1D5EE,0x1D7EC))],
+['Sans Kursiv','Fett & Kursiv',t=>run(t,blk(0x1D608,0x1D622,0x1D7E2))],
+['Sans Fett Kursiv','Fett & Kursiv',t=>run(t,blk(0x1D63C,0x1D656,0x1D7EC))],
+['Schreibschrift','Schreibschrift & Gotisch',t=>run(t,blk(0x1D49C,0x1D4B6,0,scrE))],
+['Schreibschrift Fett','Schreibschrift & Gotisch',t=>run(t,blk(0x1D4D0,0x1D4EA,0x1D7CE))],
+['Gotisch','Schreibschrift & Gotisch',t=>run(t,blk(0x1D504,0x1D51E,0,frE))],
+['Gotisch Fett','Schreibschrift & Gotisch',t=>run(t,blk(0x1D56C,0x1D586,0))],
+['Doppelstrich','Schreibschrift & Gotisch',t=>run(t,blk(0x1D538,0x1D552,0x1D7D8,dsE))],
+['Sans','Serifenlos & Mono',t=>run(t,blk(0x1D5A0,0x1D5BA,0x1D7E2))],
+['Monospace','Serifenlos & Mono',t=>run(t,blk(0x1D670,0x1D68A,0x1D7F6))],
+['Kapitälchen','Serifenlos & Mono',t=>run(t,smallcaps)],
+['Vollbreit','Serifenlos & Mono',t=>run(t,fw)],
+['Hochgestellt','Serifenlos & Mono',t=>run(t,lo(mp(supL)))],
+['Kreise','Rahmen & Kreise',t=>run(t,blk(0x24B6,0x24D0,0,bubbleDig))],
+['Kreise Gefüllt','Rahmen & Kreise',t=>run(t,up(blk(0x1F150,0,0,negDig)))],
+['Quadrate','Rahmen & Kreise',t=>run(t,up(blk(0x1F130,0,0)))],
+['Quadrate Gefüllt','Rahmen & Kreise',t=>run(t,up(blk(0x1F170,0,0)))],
+['Klammern','Rahmen & Kreise',t=>run(t,c=>/[a-z]/i.test(c)?String.fromCodePoint(0x249C+c.toLowerCase().charCodeAt(0)-97):parDig[c]||c)],
+['Durchgestrichen','Effekte',comb('\u0336')],
+['Unterstrichen','Effekte',comb('\u0332')],
+['Doppelt unterstrichen','Effekte',comb('\u0333')],
+['Überstrichen','Effekte',comb('\u0305')],
+['Schräg durchgestrichen','Effekte',comb('\u0338')],
+['Punkt darunter','Effekte',comb('\u0323')],
+['Wellenlinie','Effekte',comb('\u0330')],
+['Glitch','Effekte',zal],
+['Kopfüber','Effekte',t=>Array.from(t.toLowerCase()).reverse().map(c=>flipM[c]||c).join('')],
+['Rückwärts','Effekte',t=>Array.from(t).reverse().join('')],
+['Abwechselnd','Effekte',alt],
+['Gesperrt','Effekte',t=>Array.from(t).join(' ')],
+['Punkte','Effekte',t=>Array.from(t).join('·')],
+['Sterne','Deko',wrap('★ ',' ★')],
+['Funkeln','Deko',wrap('✧･ﾟ: *✧ ',' ✧*:･ﾟ✧')],
+['Blumen','Deko',wrap('✿ ',' ✿')],
+['Herzen','Deko',wrap('♡ ',' ♡')],
+['Klammer Kanten','Deko',wrap('「 ',' 」')],
+['Verschnörkelt','Deko',wrap('꧁ ',' ꧂')],
+['Pfeile','Deko',wrap('»»— ',' —««')],
+['Rahmen','Deko',wrap('【 ',' 】')],
+['Schatten','Deko',wrap('░▒▓ ',' ▓▒░')],
+['Kawaii','Deko',wrap('(◕‿◕✿) ',' ♡')],
+['Linien','Deko',wrap('━━━ ',' ━━━')],
+['Krone','Deko',wrap('♛ ',' ♛')],
+['Fett + Sterne','Deko',t=>'✦ '+run(t,blk(0x1D400,0x1D41A,0x1D7CE))+' ✦'],
+['Script + Herzen','Deko',t=>'♡ '+run(t,blk(0x1D4D0,0x1D4EA,0x1D7CE))+' ♡'],
+['Gotisch + Kreuze','Deko',t=>'† '+run(t,blk(0x1D56C,0x1D586,0))+' †']
+];
+const CATS=['Alle','Favoriten','Fett & Kursiv','Schreibschrift & Gotisch','Serifenlos & Mono','Rahmen & Kreise','Effekte','Deko'];
+let cat='Alle',favs=new Set();
+try{favs=new Set(JSON.parse(localStorage.getItem('fav')||'[]'))}catch(e){}
+const saveFav=()=>{try{localStorage.setItem('fav',JSON.stringify([...favs]))}catch(e){}};
+
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),1500)}
+async function copy(s){try{await navigator.clipboard.writeText(s)}catch(e){const a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(_){}a.remove()}toast('Kopiert!')}
+
+function chips(){const c=$('#chips');c.textContent='';CATS.forEach(n=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=n==='Favoriten'?'★ Favoriten':n;b.setAttribute('aria-pressed',n===cat);b.onclick=()=>{cat=n;chips();render()};c.appendChild(b)})}
+
+function render(){
+  const t=$('#inp').value,q=$('#q').value.trim().toLowerCase(),g=$('#grid');
+  const n=Array.from(t).length;$('#cnt').textContent=n;$('#cnt').className=n>150?'over':'';
+  g.textContent='';
+  const list=B.filter(([name,c])=>(cat==='Alle'||(cat==='Favoriten'?favs.has(name):c===cat))&&(!q||name.toLowerCase().includes(q)));
+  if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=cat==='Favoriten'&&!q?'Noch keine Favoriten. Tippe auf den Stern bei einem Stil.':'Kein Stil gefunden.';g.appendChild(e);return}
+  const src=t||'Dein Text hier';
+  list.forEach(([name,c,f])=>{
+    const out=f(src);
+    const d=document.createElement('div');d.className='item';d.tabIndex=0;d.setAttribute('role','button');d.setAttribute('aria-label',name+' kopieren');
+    const top=document.createElement('div');top.className='top';
+    const nm=document.createElement('span');nm.textContent=name;
+    const acts=document.createElement('div');acts.className='acts';
+    const fv=document.createElement('button');fv.type='button';fv.className='sm'+(favs.has(name)?' on':'');fv.textContent=favs.has(name)?'★':'☆';fv.setAttribute('aria-label','Favorit');
+    fv.onclick=e=>{e.stopPropagation();favs.has(name)?favs.delete(name):favs.add(name);saveFav();render()};
+    const cp=document.createElement('button');cp.type='button';cp.className='sm cp';cp.textContent='Kopieren';
+    acts.append(fv,cp);top.append(nm,acts);
+    const o=document.createElement('div');o.className='out';o.textContent=out;
+    d.append(top,o);
+    const go=()=>copy(f($('#inp').value||src));
+    d.onclick=go;d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}};
+    g.appendChild(d);
+  });
+}
+$('#inp').addEventListener('input',render);
+$('#q').addEventListener('input',render);
+$('#clr').onclick=()=>{$('#inp').value='';render();$('#inp').focus()};
+$('#theme').onclick=()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark'};
+const G=[
+['Kanal-Präfixe','Mit deinem Kanalnamen kombiniert. Antippen kopiert alles.',['├・','└・','┣・','┗・','╭・','╰・','│・','┃','▸','➤','»','∙','・','•','⌗','┊','╞','╘','⊹','⌁','❯','›','◦','✦・','❖・','┝','┕','╟','╙','⟡・','☆・','♡・'],1],
+['Linien & Trenner','Für Kategorien, Bios und Trennlinien.',['━━━━━━━━━━','═══════════','▬▬▬▬▬▬▬','┈┈┈┈┈┈┈┈','┅┅┅┅┅┅┅','──────────','╌╌╌╌╌╌╌','・・・・・・・','⋆˚࿔ ˖⁺','⋆｡°✩ ｡⋆','▁▂▃▄▅▆▇','░▒▓█▓▒░','﹌﹌﹌﹌﹌','～～～～～']],
+['Rahmen & Klammern','Zum Einrahmen von Namen.',['「」','【】','『』','《》','〔〕','⟦⟧','｢｣','⟪⟫','╔═╗','╚═╝','┌─┐','└─┘','〖〗','﹝﹞']],
+['Sterne & Funkeln','',['★','☆','✦','✧','✨','⋆','✩','✪','✯','⭐','❂','✶','✷','✸','✹','⁂','❈','❋','⊹','˚']],
+['Herzen','',['♡','♥','❤','❥','❣','💜','💙','🖤','🤍','❦','ღ','💗']],
+['Pfeile','',['➜','➤','➔','→','⇒','⟶','↳','↪','⮕','▶','►','⏩','»','⟫','⇢','⤷']],
+['Symbole','Typisch für Server und Bios.',['⚡','☄','❖','☾','☀','☁','❄','✿','❀','♛','♚','⚔','☠','✉','☎','♫','♪','⚙','⚑','⚐','✔','✘','☢','☯','☮','✞','†','☕','⚜','♞']],
+['Blöcke & Punkte','',['■','□','▪','▫','◆','◇','●','○','◉','◎','▲','△','▼','▽','◐','◑']]
+];
+const kname=()=>($('#kn').value.trim().toLowerCase().replace(/\s+/g,'-'))||'chat';
+function addCmp(s){$('#cmp').value+=s}
+function sym(){
+  const g=$('#sg');g.textContent='';
+  G.forEach(([title,hint,items,pre])=>{
+    const s=document.createElement('section');s.className='grp';
+    const h=document.createElement('h2');h.textContent=title;s.appendChild(h);
+    if(hint){const p=document.createElement('p');p.textContent=hint;s.appendChild(p)}
+    const w=document.createElement('div');w.className='tg';
+    items.forEach(it=>{
+      const b=document.createElement('button');b.type='button';b.className='tile'+(pre?' p':'');
+      const full=pre?it+kname():it;
+      b.textContent=full;b.setAttribute('aria-label',full+' kopieren');
+      b.onclick=()=>{copy(full);addCmp(it)};
+      w.appendChild(b);
+    });
+    s.appendChild(w);g.appendChild(s);
+  });
+}
+$('#kn').addEventListener('input',sym);
+$('#cc').onclick=()=>{const v=$('#cmp').value;v?copy(v):toast('Noch nichts ausgewählt')};
+$('#cx').onclick=()=>{$('#cmp').value='';$('#cmp').focus()};
+function tab(n){$('#fv').hidden=n!==1;$('#dv').hidden=n!==2;$('#t1').setAttribute('aria-pressed',n===1);$('#t2').setAttribute('aria-pressed',n===2);window.scrollTo(0,0)}
+$('#t1').onclick=()=>tab(1);$('#t2').onclick=()=>tab(2);
+chips();render();sym();
+</script>
+</body>
+</html>
